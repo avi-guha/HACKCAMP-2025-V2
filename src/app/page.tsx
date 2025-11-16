@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition, useCallback, useEffect } from 'react';
+import { useState, useTransition, useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { AppHeader } from '@/components/app/header';
 import { ScreenshotUploader } from '@/components/app/screenshot-uploader';
@@ -35,6 +35,7 @@ export default function Home() {
   const [tones, setTones] = useState<Tone[]>([]);
   const [isAnalyzingText, startTextTransition] = useTransition();
   const { toast } = useToast();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Real-time text analysis
   const analyzeText = useCallback((text: string) => {
@@ -58,11 +59,18 @@ export default function Home() {
       }
     } else {
       setTones([]);
-      if (viewMode === 'text-analysis') {
-        setViewMode('input');
-      }
     }
   }, [textInput, debouncedAnalysis, viewMode]);
+
+  // Auto-focus textarea when switching to text-analysis view
+  useEffect(() => {
+    if (viewMode === 'text-analysis' && textareaRef.current) {
+      const textarea = textareaRef.current;
+      const length = textarea.value.length;
+      textarea.focus();
+      textarea.setSelectionRange(length, length);
+    }
+  }, [viewMode]);
 
   const handleFileSelect = (file: File | null) => {
     if (result) setResult(null);
@@ -181,6 +189,7 @@ export default function Home() {
           {/* Input Container */}
           <div className="w-full relative">
             <textarea
+              ref={textareaRef}
               placeholder="Write or paste your text here..."
               value={textInput}
               onChange={(e) => setTextInput(e.target.value)}
@@ -218,6 +227,7 @@ export default function Home() {
           {/* Input Container */}
           <div className="w-full relative">
             <textarea
+              ref={textareaRef}
               placeholder="Write or paste your text here..."
               value={textInput}
               onChange={(e) => setTextInput(e.target.value)}

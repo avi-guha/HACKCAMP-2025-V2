@@ -4,7 +4,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 export function AnalysisSkeleton() {
   return (
     <div className="space-y-8 animate-pulse">
-      <Card>
+      <Card className="bg-[#5a6088]/80 border-[#a8c5db]/30">
         <CardHeader>
           <Skeleton className="h-6 w-1/3" />
           <Skeleton className="h-4 w-1/2 mt-2" />

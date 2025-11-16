@@ -70,7 +70,7 @@ export function ScreenshotUploader({
         onDrop={handleDrop}
         className={cn(
           'w-full h-48 border-2 border-dashed rounded-lg flex flex-col items-center justify-center cursor-pointer transition-colors duration-200',
-          isDragging ? 'border-primary bg-primary/10' : 'border-border hover:border-primary/80 hover:bg-gray-50'
+          isDragging ? 'border-[hsl(197_71%_73%)] bg-[#5a6088]/30' : 'border-[#a8c5db]/40 hover:border-[hsl(197_71%_73%)] hover:bg-[#5a6088]/20'
         )}
       >
         <input
@@ -82,18 +82,18 @@ export function ScreenshotUploader({
           onChange={(e) => handleFileChange(e.target.files)}
         />
         <div className="text-center p-4">
-          <UploadCloud className="mx-auto h-10 w-10 text-gray-400" />
-          <p className="mt-2 text-sm text-gray-600">
-            <span className="font-semibold text-primary/90">Click to upload</span> or drag and drop
+          <UploadCloud className="mx-auto h-10 w-10 text-[#a8c5db]/60" />
+          <p className="mt-2 text-sm text-[#a8c5db]">
+            <span className="font-semibold text-[hsl(197_71%_73%)]">Click to upload</span> or drag and drop
           </p>
-          <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+          <p className="text-xs text-[#a8c5db]/70">PNG, JPG, GIF up to 10MB</p>
         </div>
       </label>
 
       {screenshotPreview && (
-        <div className="w-full max-w-sm p-2 border rounded-lg bg-white shadow-inner">
-          <div className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2 px-1">
-            <FileImage className="h-4 w-4 text-gray-500" />
+        <div className="w-full max-w-sm p-2 border border-[#a8c5db]/30 rounded-lg bg-[#5a6088]/50 shadow-inner">
+          <div className="flex items-center gap-2 text-sm font-medium text-[#a8c5db] mb-2 px-1">
+            <FileImage className="h-4 w-4 text-[#a8c5db]/70" />
             <span>Preview</span>
           </div>
           <Image
