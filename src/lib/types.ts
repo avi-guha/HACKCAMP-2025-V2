@@ -1,8 +1,11 @@
-export type Tone = 'positive' | 'negative' | 'neutral' | 'sarcastic' | 'unknown';
+export type Tone = {
+  word: string;
+  confidence: number;
+};
 
 export type AnalysisResult = {
   messages: {
     text: string;
-    tone: Tone;
+    tones: Tone[];
   }[];
 };

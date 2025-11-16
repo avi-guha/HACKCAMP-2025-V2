@@ -22,14 +22,16 @@ export function AnalysisResults({ result }: AnalysisResultsProps) {
         </CardHeader>
         <CardContent>
           <ScrollArea className="h-[400px] w-full pr-4">
-            <div className="space-y-4">
+            <div className="space-y-6">
               {result.messages.map((message, index) => (
-                <div key={index} className="flex flex-col gap-2">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm text-gray-800 flex-grow mr-4">{message.text}</p>
-                    <ToneDisplay tone={message.tone} />
+                <div key={index} className="flex flex-col gap-3">
+                  <p className="text-sm text-gray-800 flex-grow">{message.text}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {message.tones.map((tone, toneIndex) => (
+                      <ToneDisplay key={toneIndex} tone={tone} />
+                    ))}
                   </div>
-                  {index < result.messages.length - 1 && <Separator className="mt-2" />}
+                  {index < result.messages.length - 1 && <Separator className="mt-4" />}
                 </div>
               ))}
             </div>

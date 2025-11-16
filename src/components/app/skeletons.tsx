@@ -9,11 +9,14 @@ export function AnalysisSkeleton() {
           <Skeleton className="h-6 w-1/3" />
           <Skeleton className="h-4 w-1/2 mt-2" />
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6">
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="flex items-center justify-between">
-              <Skeleton className="h-4 w-2/3" />
-              <Skeleton className="h-6 w-20 rounded-full" />
+            <div key={i} className="flex flex-col gap-3">
+              <Skeleton className="h-4 w-4/5" />
+               <div className="flex gap-2">
+                <Skeleton className="h-12 w-36 rounded-lg" />
+                <Skeleton className="h-12 w-36 rounded-lg" />
+               </div>
             </div>
           ))}
         </CardContent>

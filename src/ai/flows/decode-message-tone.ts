@@ -17,12 +17,13 @@ const DecodeMessageToneInputSchema = z.object({
 });
 export type DecodeMessageToneInput = z.infer<typeof DecodeMessageToneInputSchema>;
 
+const ToneDescriptorSchema = z.object({
+  word: z.string().describe('A single word that describes the tone of the message (e.g., Joyful, Anxious, Sarcastic).'),
+  confidence: z.number().min(0).max(1).describe('A confidence score from 0.0 to 1.0 indicating how strongly the word aligns with the message\'s tone.'),
+});
+
 const DecodeMessageToneOutputSchema = z.object({
-  tone: z
-    .string()
-    .describe(
-      'The tone of the message (e.g., positive, negative, neutral, sarcastic).' + ' Return only one of these options.'
-    ),
+  tones: z.array(ToneDescriptorSchema).min(2).max(3).describe("An array of 2-3 words that best describe the message's tone, along with a confidence score for each word.")
 });
 export type DecodeMessageToneOutput = z.infer<typeof DecodeMessageToneOutputSchema>;
 
@@ -34,7 +35,7 @@ const decodeMessageTonePrompt = ai.definePrompt({
   name: 'decodeMessageTonePrompt',
   input: {schema: DecodeMessageToneInputSchema},
   output: {schema: DecodeMessageToneOutputSchema},
-  prompt: `What is the tone of the following message? Options are: positive, negative, neutral, sarcastic.
+  prompt: `Analyze the tone of the following message. Provide 2-3 descriptive words (e.g., "Excited", "Worried", "Formal") that best capture the tone. For each word, provide a confidence score from 0.0 to 1.0.
 
 Message: {{{message}}}`,
 });

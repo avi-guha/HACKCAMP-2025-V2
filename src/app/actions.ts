@@ -4,19 +4,6 @@ import { extractTextFromScreenshot } from '@/ai/flows/extract-text-from-screensh
 import { decodeMessageTone } from '@/ai/flows/decode-message-tone';
 import type { AnalysisResult, Tone } from '@/lib/types';
 
-function sanitizeTone(rawTone: string): Tone {
-  if (!rawTone) return 'unknown';
-  const lowerTone = rawTone.toLowerCase().trim().replace(/[.,]/g, '');
-
-  if (lowerTone.includes('positive')) return 'positive';
-  if (lowerTone.includes('negative')) return 'negative';
-  if (lowerTone.includes('neutral')) return 'neutral';
-  if (lowerTone.includes('sarcastic')) return 'sarcastic';
-  
-  return 'unknown';
-}
-
-
 export async function analyzeScreenshotAction(
   photoDataUri: string
 ): Promise<{ success: true; data: AnalysisResult } | { success: false; error: string }> {
@@ -42,15 +29,15 @@ export async function analyzeScreenshotAction(
 
     const messagesWithTones = messageLines.map((text, index) => {
       const toneResult = tonesResults[index];
-      let tone: Tone = 'unknown';
+      let tones: Tone[] = [];
 
-      if (toneResult.status === 'fulfilled' && toneResult.value?.tone) {
-        tone = sanitizeTone(toneResult.value.tone);
+      if (toneResult.status === 'fulfilled' && toneResult.value?.tones) {
+        tones = toneResult.value.tones;
       } else {
         console.error(`Failed to decode tone for message: "${text}"`);
       }
       
-      return { text, tone };
+      return { text, tones };
     });
 
     return {
