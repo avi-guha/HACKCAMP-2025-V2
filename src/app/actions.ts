@@ -51,3 +51,24 @@ export async function analyzeScreenshotAction(
     return { success: false, error: 'An unexpected error occurred. Please try again.' };
   }
 }
+
+export async function analyzeMessageAction(
+  message: string
+): Promise<{ success: true; tones: Tone[] } | { success: false; error: string }> {
+  try {
+    if (!message || message.trim().length === 0) {
+      return { success: true, tones: [] };
+    }
+
+    const result = await decodeMessageTone({ message });
+    
+    if (result?.tones) {
+      return { success: true, tones: result.tones };
+    } else {
+      return { success: false, error: 'Failed to analyze message tone.' };
+    }
+  } catch (error) {
+    console.error('An error occurred during message analysis:', error);
+    return { success: false, error: 'An unexpected error occurred. Please try again.' };
+  }
+}

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
+import Link from 'next/link';
 import { AppHeader } from '@/components/app/header';
 import { ScreenshotUploader } from '@/components/app/screenshot-uploader';
 import { AnalysisResults } from '@/components/app/analysis-results';
@@ -9,6 +10,8 @@ import type { AnalysisResult } from '@/lib/types';
 import { analyzeScreenshotAction } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Edit } from 'lucide-react';
 
 export default function Home() {
   const [result, setResult] = useState<AnalysisResult | null>(null);
@@ -59,16 +62,25 @@ export default function Home() {
       <main className="w-full max-w-2xl mx-auto flex flex-col gap-8 mt-8">
         <Card className="shadow-lg">
           <CardHeader>
-            <CardTitle className="text-2xl font-headline">Upload Conversation</CardTitle>
-            <CardDescription>Upload a screenshot of a text message conversation to get started.</CardDescription>
+            <CardTitle className="text-2xl font-headline">Conversation Analysis</CardTitle>
+             <CardDescription>
+              Upload a screenshot of a text message conversation to get started, or try the interactive playground.
+            </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-6">
             <ScreenshotUploader
               onFileSelect={handleFileSelect}
               onAnalyze={handleAnalysis}
               isAnalyzing={isAnalyzing}
               screenshotPreview={screenshotPreview}
             />
+             <div className="flex justify-center">
+              <Button asChild variant="outline">
+                <Link href="/playground">
+                  <Edit className="mr-2 h-4 w-4" /> Go to Tone Playground
+                </Link>
+              </Button>
+            </div>
           </CardContent>
         </Card>
         
