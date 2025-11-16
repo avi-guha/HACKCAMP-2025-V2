@@ -27,6 +27,7 @@ type ViewMode = 'input' | 'text-analysis' | 'image-analysis';
 
 export default function Home() {
   const [viewMode, setViewMode] = useState<ViewMode>('input');
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [screenshotPreview, setScreenshotPreview] = useState<string | null>(null);
@@ -55,7 +56,12 @@ export default function Home() {
     if (textInput.trim().length > 0) {
       debouncedAnalysis(textInput);
       if (viewMode === 'input') {
-        setViewMode('text-analysis');
+        // Fade out current view
+        setIsTransitioning(true);
+        setTimeout(() => {
+          setViewMode('text-analysis');
+          setIsTransitioning(false);
+        }, 400);
       }
     } else {
       setTones([]);
@@ -77,13 +83,17 @@ export default function Home() {
     if (error) setError(null);
 
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setScreenshotPreview(reader.result as string);
-        setViewMode('image-analysis');
-        setTextInput(''); // Clear text input when uploading image
-      };
-      reader.readAsDataURL(file);
+      setIsTransitioning(true);
+      setTimeout(() => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setScreenshotPreview(reader.result as string);
+          setViewMode('image-analysis');
+          setTextInput(''); // Clear text input when uploading image
+          setIsTransitioning(false);
+        };
+        reader.readAsDataURL(file);
+      }, 400);
     } else {
       setScreenshotPreview(null);
       setViewMode('input');
@@ -112,12 +122,16 @@ export default function Home() {
   };
 
   const handleBack = () => {
-    setViewMode('input');
-    setTextInput('');
-    setTones([]);
-    setScreenshotPreview(null);
-    setResult(null);
-    setError(null);
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setViewMode('input');
+      setTextInput('');
+      setTones([]);
+      setScreenshotPreview(null);
+      setResult(null);
+      setError(null);
+      setIsTransitioning(false);
+    }, 400);
   };
 
   return (
@@ -180,7 +194,7 @@ export default function Home() {
 
       {/* Input View */}
       {viewMode === 'input' && (
-        <main className="w-full max-w-md mx-auto flex flex-col items-center gap-12">
+        <main className={`w-full max-w-md mx-auto flex flex-col items-center gap-12 transition-opacity duration-700 ${isTransitioning ? 'opacity-0' : 'opacity-100 animate-in fade-in-50'}`}>
           {/* Title */}
           <h1 className="text-4xl font-light text-center text-[#a8c5db] tracking-wide">
             analyze your<br />text
@@ -219,7 +233,7 @@ export default function Home() {
 
       {/* Text Analysis View */}
       {viewMode === 'text-analysis' && (
-        <main className="w-full max-w-md mx-auto flex flex-col items-center gap-8">
+        <main className={`w-full max-w-md mx-auto flex flex-col items-center gap-8 transition-opacity duration-700 ${isTransitioning ? 'opacity-0' : 'opacity-100 animate-in fade-in-50'}`}>
           <h1 className="text-4xl font-light text-center text-[#a8c5db] tracking-wide">
             tone analysis
           </h1>
@@ -264,7 +278,7 @@ export default function Home() {
 
       {/* Image Analysis View */}
       {viewMode === 'image-analysis' && (
-        <main className="w-full max-w-md mx-auto flex flex-col items-center gap-8">
+        <main className={`w-full max-w-md mx-auto flex flex-col items-center gap-8 transition-opacity duration-700 ${isTransitioning ? 'opacity-0' : 'opacity-100 animate-in fade-in-50'}`}>
           <h1 className="text-4xl font-light text-center text-[#a8c5db] tracking-wide">
             screenshot<br />analysis
           </h1>
