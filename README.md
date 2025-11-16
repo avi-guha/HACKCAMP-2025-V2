@@ -7,7 +7,7 @@ ToneLens is a lightweight text-analysis app designed to help users understand ho
 Because we have used a Gemini API key that will probably turn to shit when we try to push to git due to privacy leaks, we are requesting that you follow the steps below: 
 
 1. Generate an Gemini API key if you have not already.
-2. Create a text file with the name '.env.local' in the root. 
+2. Create a file with the name '.env.local' in the root. 
 3. Enter the following text in your new file: 'GEMINI_API_KEY=your-api-key'
 4. npm install, npm run genkit:dev, npm run dev.
 5. Detect tones!
