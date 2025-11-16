@@ -277,7 +277,7 @@ export function LoadingPage({ onComplete }: LoadingPageProps) {
       {/* Title overlay - positioned below the magnifying glass and bubble */}
       <div className={`absolute inset-0 flex items-center justify-center pb-80 transition-opacity duration-1000 ${showTitle ? 'opacity-100' : 'opacity-0'}`}>
         <h1 className="text-7xl font-light tracking-wider bg-gradient-to-br from-[hsl(271_81%_56%)] to-[hsl(197_71%_73%)] bg-clip-text text-transparent">
-          ToneScribe
+          ToneLens
         </h1>
       </div>
     </div>
