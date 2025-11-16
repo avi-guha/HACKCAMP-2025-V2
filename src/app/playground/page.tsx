@@ -55,47 +55,95 @@ export default function PlaygroundPage() {
 
 
   return (
-    <div className="flex flex-col items-center min-h-screen p-4 sm:p-6 md:p-8">
-      <AppHeader />
-      <main className="w-full max-w-2xl mx-auto flex flex-col gap-8 mt-8">
-        <div className="flex justify-start">
-            <Button asChild variant="outline">
-                <Link href="/">
-                    <Home className="mr-2 h-4 w-4" />
-                    Back to Home
-                </Link>
-            </Button>
+    <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-[#3d4464]">
+      {/* Back button */}
+      <button className="absolute top-6 left-6 text-white">
+        <Link href="/">
+          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </Link>
+      </button>
+
+      {/* Logo in top right */}
+      <div className="absolute top-6 right-6">
+        <svg 
+          className="w-10 h-10" 
+          viewBox="0 0 100 100" 
+          fill="none" 
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle 
+            cx="35" 
+            cy="35" 
+            r="25" 
+            stroke="hsl(197 71% 73%)" 
+            strokeWidth="5" 
+            fill="none"
+          />
+          <rect 
+            x="22" 
+            y="26" 
+            width="26" 
+            height="16" 
+            rx="3" 
+            fill="hsl(197 71% 73%)"
+          />
+          <path 
+            d="M 30 42 L 28 46 L 32 42 Z" 
+            fill="hsl(197 71% 73%)"
+          />
+          <circle cx="28" cy="34" r="1.5" fill="hsl(271 81% 56%)" />
+          <circle cx="35" cy="34" r="1.5" fill="hsl(271 81% 56%)" />
+          <circle cx="42" cy="34" r="1.5" fill="hsl(271 81% 56%)" />
+          <line 
+            x1="52" 
+            y1="52" 
+            x2="72" 
+            y2="72" 
+            stroke="hsl(197 71% 73%)" 
+            strokeWidth="5" 
+            strokeLinecap="round"
+          />
+        </svg>
+      </div>
+
+      <main className="w-full max-w-md mx-auto flex flex-col items-center gap-12">
+        {/* Title */}
+        <h1 className="text-4xl font-light text-center text-[#a8c5db] tracking-wide">
+          analyze your<br />text
+        </h1>
+
+        {/* Input Container */}
+        <div className="w-full relative">
+          <Textarea
+            placeholder="Write or paste your text here..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            className="w-full min-h-[200px] bg-[#5a6088] border-none rounded-3xl p-6 text-white placeholder:text-[#a8c5db]/60 resize-none focus-visible:ring-2 focus-visible:ring-[hsl(197_71%_73%)] focus-visible:ring-offset-0"
+          />
+          
+          {/* Message icon in bottom right of textarea */}
+          <div className="absolute bottom-4 right-4">
+            <svg className="w-6 h-6 text-[#a8c5db]/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+            </svg>
+          </div>
         </div>
-        <Card className="shadow-lg">
-          <CardHeader>
-            <CardTitle className="text-2xl font-headline">Tone Playground</CardTitle>
-            <CardDescription>
-              Type a message below and see its tone analyzed in real-time.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Textarea
-              placeholder="Type your message here..."
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              className="min-h-[120px] text-base"
-            />
-            <div className="min-h-[60px] flex flex-col justify-center">
-              {isAnalyzing ? (
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  <span>Analyzing...</span>
-                </div>
-              ) : (
-                <div className="flex flex-wrap gap-2">
-                  {tones.map((tone, toneIndex) => (
-                    <ToneDisplay key={toneIndex} tone={tone} />
-                  ))}
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+
+        {/* Results */}
+        {isAnalyzing ? (
+          <div className="flex items-center gap-2 text-[#a8c5db]">
+            <Loader2 className="h-5 w-5 animate-spin" />
+            <span>Analyzing...</span>
+          </div>
+        ) : tones.length > 0 && (
+          <div className="w-full flex flex-wrap gap-2 justify-center">
+            {tones.map((tone, toneIndex) => (
+              <ToneDisplay key={toneIndex} tone={tone} />
+            ))}
+          </div>
+        )}
       </main>
     </div>
   );
