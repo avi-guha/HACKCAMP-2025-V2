@@ -7,6 +7,7 @@ import { ScreenshotUploader } from '@/components/app/screenshot-uploader';
 import { AnalysisResults } from '@/components/app/analysis-results';
 import { AnalysisSkeleton } from '@/components/app/skeletons';
 import { ToneDisplay } from '@/components/app/tone-display';
+import { LoadingPage } from '@/components/app/loading-page';
 import type { AnalysisResult, Tone } from '@/lib/types';
 import { analyzeScreenshotAction, analyzeMessageAction } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
@@ -26,6 +27,7 @@ function debounce<T extends (...args: any[]) => void>(func: T, delay: number) {
 type ViewMode = 'input' | 'text-analysis' | 'image-analysis';
 
 export default function Home() {
+  const [showLoading, setShowLoading] = useState(true);
   const [viewMode, setViewMode] = useState<ViewMode>('input');
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
@@ -61,7 +63,7 @@ export default function Home() {
         setTimeout(() => {
           setViewMode('text-analysis');
           setIsTransitioning(false);
-        }, 400);
+        }, 300);
       }
     } else {
       setTones([]);
@@ -93,7 +95,7 @@ export default function Home() {
           setIsTransitioning(false);
         };
         reader.readAsDataURL(file);
-      }, 400);
+      }, 500);
     } else {
       setScreenshotPreview(null);
       setViewMode('input');
@@ -131,8 +133,12 @@ export default function Home() {
       setResult(null);
       setError(null);
       setIsTransitioning(false);
-    }, 400);
+    }, 500);
   };
+
+  if (showLoading) {
+    return <LoadingPage onComplete={() => setShowLoading(false)} />;
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-[#3d4464]">
@@ -194,7 +200,7 @@ export default function Home() {
 
       {/* Input View */}
       {viewMode === 'input' && (
-        <main className={`w-full max-w-md mx-auto flex flex-col items-center gap-12 transition-opacity duration-700 ${isTransitioning ? 'opacity-0' : 'opacity-100 animate-in fade-in-50'}`}>
+        <main className={`w-full max-w-md mx-auto flex flex-col items-center gap-12 transition-opacity duration-[800ms] ${isTransitioning ? 'opacity-0' : 'opacity-100 animate-in fade-in-50'}`}>
           {/* Title */}
           <h1 className="text-4xl font-light text-center text-[#a8c5db] tracking-wide">
             analyze your<br />text
@@ -233,7 +239,7 @@ export default function Home() {
 
       {/* Text Analysis View */}
       {viewMode === 'text-analysis' && (
-        <main className={`w-full max-w-md mx-auto flex flex-col items-center gap-8 transition-opacity duration-700 ${isTransitioning ? 'opacity-0' : 'opacity-100 animate-in fade-in-50'}`}>
+        <main className={`w-full max-w-md mx-auto flex flex-col items-center gap-8 transition-opacity duration-[800ms] ${isTransitioning ? 'opacity-0' : 'opacity-100 animate-in fade-in-50'}`}>
           <h1 className="text-4xl font-light text-center text-[#a8c5db] tracking-wide">
             tone analysis
           </h1>
@@ -278,7 +284,7 @@ export default function Home() {
 
       {/* Image Analysis View */}
       {viewMode === 'image-analysis' && (
-        <main className={`w-full max-w-md mx-auto flex flex-col items-center gap-8 transition-opacity duration-700 ${isTransitioning ? 'opacity-0' : 'opacity-100 animate-in fade-in-50'}`}>
+        <main className={`w-full max-w-md mx-auto flex flex-col items-center gap-8 transition-opacity duration-[800ms] ${isTransitioning ? 'opacity-0' : 'opacity-100 animate-in fade-in-50'}`}>
           <h1 className="text-4xl font-light text-center text-[#a8c5db] tracking-wide">
             screenshot<br />analysis
           </h1>
