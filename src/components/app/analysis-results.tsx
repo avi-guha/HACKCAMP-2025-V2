@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { ToneDisplay } from './tone-display';
-import { Bot } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 
 interface AnalysisResultsProps {
   result: AnalysisResult;
@@ -15,19 +15,9 @@ export function AnalysisResults({ result }: AnalysisResultsProps) {
       <Card className="shadow-lg">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 font-headline">
-            <Bot className="h-6 w-6 text-accent-foreground" />
-            AI Sentiment Summary
+            <MessageCircle className="h-6 w-6 text-accent-foreground" />
+            Conversation Breakdown
           </CardTitle>
-          <CardDescription>An overall summary of the conversation's emotional tone.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-gray-700 leading-relaxed">{result.summary}</p>
-        </CardContent>
-      </Card>
-
-      <Card className="shadow-lg">
-        <CardHeader>
-          <CardTitle className="font-headline">Conversation Breakdown</CardTitle>
           <CardDescription>The decoded tone of each message in the conversation.</CardDescription>
         </CardHeader>
         <CardContent>

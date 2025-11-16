@@ -2,7 +2,6 @@
 
 import { extractTextFromScreenshot } from '@/ai/flows/extract-text-from-screenshot';
 import { decodeMessageTone } from '@/ai/flows/decode-message-tone';
-import { summarizeConversationSentiment } from '@/ai/flows/summarize-conversation-sentiment';
 import type { AnalysisResult, Tone } from '@/lib/types';
 
 function sanitizeTone(rawTone: string): Tone {
@@ -36,15 +35,10 @@ export async function analyzeScreenshotAction(
         return { success: false, error: 'No individual message lines found in the extracted text.' };
     }
 
-    // 3. Concurrently get summary and decode tones
-    const [summaryResult, tonesResults] = await Promise.all([
-      summarizeConversationSentiment({ conversationText: fullText }),
-      Promise.allSettled(
+    // 3. Concurrently decode tones for each message
+    const tonesResults = await Promise.allSettled(
         messageLines.map(line => decodeMessageTone({ message: line }))
-      ),
-    ]);
-
-    const summary = summaryResult?.sentimentSummary || 'Could not generate a summary.';
+      );
 
     const messagesWithTones = messageLines.map((text, index) => {
       const toneResult = tonesResults[index];
@@ -62,7 +56,6 @@ export async function analyzeScreenshotAction(
     return {
       success: true,
       data: {
-        summary,
         messages: messagesWithTones,
       },
     };

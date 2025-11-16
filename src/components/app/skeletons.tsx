@@ -6,17 +6,6 @@ export function AnalysisSkeleton() {
     <div className="space-y-8 animate-pulse">
       <Card>
         <CardHeader>
-          <Skeleton className="h-6 w-1/2" />
-          <Skeleton className="h-4 w-3/4 mt-2" />
-        </CardHeader>
-        <CardContent className="space-y-2">
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-5/6" />
-        </CardContent>
-      </Card>
-      
-      <Card>
-        <CardHeader>
           <Skeleton className="h-6 w-1/3" />
           <Skeleton className="h-4 w-1/2 mt-2" />
         </CardHeader>
