@@ -10,4 +10,4 @@ Because we have used a Gemini API key that will probably turn to shit when we tr
 2. Create a file with the name '.env.local' in the root. 
 3. Enter the following text in your new file: 'GEMINI_API_KEY=your-api-key'
 4. npm install, npm run genkit:dev, npm run dev.
-5. Detect tones!
+5. Detect tones (patience for the AI)!
