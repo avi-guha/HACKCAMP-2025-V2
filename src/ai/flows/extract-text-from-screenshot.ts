@@ -25,7 +25,7 @@ export type ExtractTextFromScreenshotInput = z.infer<
 const ExtractTextFromScreenshotOutputSchema = z.object({
   extractedText: z
     .string()
-    .describe('The extracted text from the screenshot.'),
+    .describe('A newline-separated string of the extracted text messages in chronological order.'),
 });
 export type ExtractTextFromScreenshotOutput = z.infer<
   typeof ExtractTextFromScreenshotOutputSchema
@@ -42,6 +42,14 @@ const extractTextFromScreenshotPrompt = ai.definePrompt({
   input: {schema: ExtractTextFromScreenshotInputSchema},
   output: {schema: ExtractTextFromScreenshotOutputSchema},
   prompt: `You are an AI assistant that extracts text from images.
+
+  Your task is to analyze the provided screenshot of a text message conversation and extract only the text content of the messages themselves.
+
+  - Identify each individual message bubble.
+  - Extract the text from each bubble.
+  - Order the messages chronologically based on their position in the image (top to bottom).
+  - Exclude all other information, such as timestamps, dates, sender/recipient information ("You replied"), and reaction icons.
+  - Format the output as a single string, with each message separated by a newline character (\n).
 
   Extract the text from the following image of a text message conversation:
 
